@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import * as z from 'zod';
@@ -70,8 +69,7 @@ export default function Page() {
   return (
     <section className='bg-gray-50'>
       <div className='px-6 mx-auto h-[calc(100vh-65px)] flex flex-col items-center justify-center'>
-        <div className='flex flex-col justify-center items-center gap-3 mb-10'>
-          <Image src='/images/logo.png' alt='logo' width={98} height={28} />
+        <div className='mb-10'>
           <h1 className='text-xl md:text-3xl font-extrabold leading-tight tracking-tight'>
             Create an account
           </h1>
