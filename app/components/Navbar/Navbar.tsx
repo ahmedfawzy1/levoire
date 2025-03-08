@@ -23,15 +23,20 @@ export default function Navbar() {
   const { user, handleSignOut } = useAuth();
   const menuRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const buttonClickedRef = useRef(false);
 
-  const toggleMobileMenu = () => {
+  const toggleMobileMenu = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    buttonClickedRef.current = true;
     setIsMenuOpen(prevState => {
       if (!prevState) setIsUserMenuOpen(false);
       return !prevState;
     });
   };
 
-  const toggleUserMenu = () => {
+  const toggleUserMenu = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    buttonClickedRef.current = true;
     setIsUserMenuOpen(prevState => {
       if (!prevState) setIsMenuOpen(false);
       return !prevState;
@@ -40,12 +45,16 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        menuRef.current &&
-        !menuRef.current.contains(event.target as Node) &&
-        userMenuRef.current &&
-        !userMenuRef.current.contains(event.target as Node)
-      ) {
+      if (buttonClickedRef.current) {
+        buttonClickedRef.current = false;
+        return;
+      }
+
+      const target = event.target as Node;
+      const isMenuButton = menuRef.current?.contains(target);
+      const isUserMenuButton = userMenuRef.current?.contains(target);
+
+      if (!isMenuButton && !isUserMenuButton) {
         setIsMenuOpen(false);
         setIsUserMenuOpen(false);
       }
