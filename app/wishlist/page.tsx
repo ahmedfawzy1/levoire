@@ -1,5 +1,6 @@
 import Wishlist from './client';
 import generateSEO from '@/lib/seo';
+
 export const generateMetadata = async () => {
   return generateSEO({
     title: 'Your Wishlist | Save & Shop Your Favorite Fashion Picks | Levoire',

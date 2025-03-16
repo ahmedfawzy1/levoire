@@ -67,7 +67,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className='bg-white border-gray-200 sticky top-0 inset-x-0 z-50'>
+    <nav className='bg-white border-gray-200 sticky top-0 inset-x-0 z-50 shadow-sm'>
       <div
         className='px-5 w-full h-16 max-w-[1500px] flex md:flex-wrap items-center justify-between gap-9 relative mx-auto border-b-1 border-black/10'
         ref={menuRef}

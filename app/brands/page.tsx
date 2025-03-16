@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { getAllBrands } from '../lib/brands';
 import generateSEO from '@/lib/seo';
+
 export const generateMetadata = async () => {
   return generateSEO({
     title: 'Shop Top Fashion Brands | Premium Clothing & Accessories | Levoire',

@@ -9,6 +9,10 @@ export const menuItems = [
     url: '/brands',
     label: 'Brands',
   },
+  {
+    url: '/blog',
+    label: 'Blog',
+  },
 ];
 
 export const socialHandles = [
