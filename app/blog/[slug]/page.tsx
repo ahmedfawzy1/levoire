@@ -36,24 +36,25 @@ export default async function page(props: pageParams) {
   const post: BlogDetail = await getBlogDetail(slug);
 
   return (
-    <section className='mt-8'>
-      <span className='block text-center text-red-600 font-semibold tracking-wide uppercase'>
-        Levoire Blog
-      </span>
-      <h1 className='mt-2 text-3xl text-center leading-8 font-bold tracking-tight sm:text-4xl'>
-        {post.title}
-      </h1>
-      <Image
-        src={urlFor(post.image).url()}
-        width={800}
-        height={800}
-        alt={post.title}
-        priority
-        className='mt-8 rounded-lg'
-      />
+    <section className='py-10'>
+      <div className='max-w-3xl mx-auto px-0 sm:px-6'>
+        <h1 className='mt-2 text-2xl md:text-4xl text-center leading-8 font-bold tracking-tight'>
+          {post.title}
+        </h1>
+        <div className='px-5 flex flex-col items-center'>
+          <Image
+            src={urlFor(post.image).url()}
+            width={750}
+            height={750}
+            alt={post.title}
+            priority
+            className='mt-8 rounded-lg'
+          />
 
-      <div className='mt-16'>
-        <PortableText value={post.content} />
+          <div className='mt-8 max-w-[750px]'>
+            <PortableText value={post.content} />
+          </div>
+        </div>
       </div>
     </section>
   );

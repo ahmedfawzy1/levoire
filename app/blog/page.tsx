@@ -18,57 +18,62 @@ export default async function page() {
   const [featuredPost, ...latestPosts] = data;
 
   return (
-    <section className='py-5'>
-      <div>
+    <section className='py-10'>
+      <div className='pb-12'>
         <h1 className='text-3xl md:text-[42px] font-semibold font-integralCF text-center pb-12'>
           Blogs
         </h1>
-        <div>
-          {featuredPost && (
-            <div key={featuredPost.slug} className='flex gap-7'>
-              <div className=''>
+        {featuredPost && (
+          <div key={featuredPost.slug} className='w-full flex gap-7'>
+            <div className='basis-1/2'>
+              <Link href={`/blog/${featuredPost.slug}`} className='w-full'>
                 <Image
                   src={urlFor(featuredPost.image).url()}
                   width={500}
                   height={500}
                   alt={featuredPost.title}
+                  className='w-full rounded-xl'
                 />
-              </div>
-              <div className='flex flex-col justify-center'>
-                <Link
-                  href={`/blog/${featuredPost.slug}`}
-                  className='font-bold text-2xl'
-                >
-                  {featuredPost.title}
-                </Link>
-                <p>{featuredPost.short_description}</p>
-              </div>
+              </Link>
             </div>
-          )}
-        </div>
+            <div className='max-w-[450px] flex flex-col justify-center basis-1/2'>
+              <Link
+                href={`/blog/${featuredPost.slug}`}
+                className='text-2xl font-bold'
+              >
+                {featuredPost.title}
+              </Link>
+              <p className='text-base text-slate-500'>
+                {featuredPost.short_description}
+              </p>
+            </div>
+          </div>
+        )}
       </div>
-      <div className='pt-12'>
+      <hr className='bg-gray-400' />
+      <div className='pt-10'>
         <h2 className='text-3xl md:text-[42px] font-semibold font-integralCF text-center pb-12'>
-          Latest Blog Posts
+          Latest Article
         </h2>
         <div className='grid grid-cols-1 md:grid-cols-4 gap-4'>
           {latestPosts.map(post => (
-            <div key={post.slug} className=''>
-              <div className='w-full h-auto'>
+            <div key={post.slug}>
+              <Link href={`/blog/${post.slug}`} className='w-full'>
                 <Image
                   src={urlFor(post.image).url()}
                   width={500}
                   height={500}
                   alt={post.title}
+                  className='w-full rounded-xl'
                 />
-              </div>
+              </Link>
               <Link
                 href={`/blog/${post.slug}`}
-                className='font-bold text-2xl mb-3'
+                className='text-lg font-semibold'
               >
                 {post.title}
               </Link>
-              <p>{post.short_description}</p>
+              <p className='text-sm text-slate-500'>{post.short_description}</p>
             </div>
           ))}
         </div>
