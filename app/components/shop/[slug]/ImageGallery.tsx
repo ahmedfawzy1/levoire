@@ -64,6 +64,7 @@ export default function ImageGallery({
               height={1196}
               src={url}
               alt={url}
+              priority
             />
           </div>
         ))}
@@ -75,6 +76,7 @@ export default function ImageGallery({
           alt={'product'}
           width={780}
           height={1196}
+          priority
         />
         <button
           className={`absolute top-2 right-2 z-50 ${
@@ -85,6 +87,7 @@ export default function ImageGallery({
             e.stopPropagation();
             toggleWishlist();
           }}
+          aria-label='add to wishlist'
         >
           <Heart size={20} fill={isWishlisted ? 'red' : 'none'} />
         </button>
