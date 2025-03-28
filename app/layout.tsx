@@ -90,6 +90,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
+      <head>
+        <meta name='robots' content='index, follow' />
+      </head>
       <body
         className={`${satoshi.variable} ${integralCF.variable} antialiased`}
       >

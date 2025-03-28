@@ -7,6 +7,7 @@ import ImageGallery from '../../components/shop/[slug]/ImageGallery';
 import Info from '../../components/shop/[slug]/Info';
 import RelatedProducts from '@/app/components/shop/[slug]/RelatedProducts';
 import generateSEO from '@/lib/seo';
+import { generateProductSchema } from '@/lib/seo_schema';
 
 interface PageParams {
   params: Promise<{ slug: string }>;
@@ -30,10 +31,11 @@ export const generateMetadata = async (props: GenerateMetadataProps) => {
 
   return generateSEO({
     title: `${product.title} | Buy Online at Levoire`,
-    description: `${product.description.substring(
-      0,
-      150
-    )}... Shop now for premium quality and exclusive designs.`,
+    description: `${
+      product.description.length > 110
+        ? `${product.description.substring(0, 110)}`
+        : `${product.description}... Shop now for premium quality and exclusive designs.`
+    }`,
   });
 };
 
@@ -47,8 +49,14 @@ export default async function page(props: PageParams) {
 
   const allReview = await getReviewsByProductId(product?.id || 0);
 
+  const jsonLD = generateProductSchema(product, slug);
+
   return (
     <section className='px-5 py-8'>
+      <script
+        type='application/ld+json'
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLD) }}
+      />
       {product && (
         <>
           <div className='flex flex-col md:flex-row gap-14 mb-5'>

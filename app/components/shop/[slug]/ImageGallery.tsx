@@ -79,7 +79,7 @@ export default function ImageGallery({
           priority
         />
         <button
-          className={`absolute top-2 right-2 z-50 ${
+          className={`absolute top-2 right-2 z-10 ${
             isWishlisted ? 'text-red-500' : 'text-gray-500'
           }`}
           onClick={e => {

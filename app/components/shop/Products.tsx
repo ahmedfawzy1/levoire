@@ -26,7 +26,7 @@ export default function Products({ showFilter, setShowFilter }: filterProps) {
     <div className='w-full'>
       <h1 className='sr-only'>Shop the Latest Fashion Trends at Levoire</h1>
       <div className='w-full md:hidden flex justify-between items-center mb-6'>
-        <h3 className='text-xl font-bold'>Filters</h3>
+        <h2 className='text-xl font-bold'>Filters</h2>
         <SlidersVertical
           color='#00000066'
           size={18}
