@@ -16,6 +16,7 @@ import {
   ShoppingCart,
   UserCircle,
 } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -41,6 +42,13 @@ export default function Navbar() {
       if (!prevState) setIsMenuOpen(false);
       return !prevState;
     });
+  };
+
+  const handleNavigation = (e: React.MouseEvent) => {
+    if (!user) {
+      e.preventDefault();
+      toast.error('Please login to access this page');
+    }
   };
 
   useEffect(() => {
@@ -125,6 +133,7 @@ export default function Navbar() {
             className='text-black cursor-pointer'
             href='/wishlist'
             aria-label='go to wishlist'
+            onClick={handleNavigation}
           >
             <Heart size={20} />
             <span className='sr-only'>wishlist</span>
@@ -133,6 +142,7 @@ export default function Navbar() {
             className='text-black cursor-pointer'
             href='/cart'
             aria-label='go to cart'
+            onClick={handleNavigation}
           >
             <ShoppingCart size={20} />
           </Link>
