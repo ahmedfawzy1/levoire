@@ -54,7 +54,7 @@ export default function Review({
     const fetchReview = async () => {
       try {
         const response = await axios.get(
-          `/api/review?userId=${userId}&productId=${productId}`
+          `/api/review?userId=${userId}&productId=${productId}`,
         );
         setHasPurchased(response.data.hasPurchased);
         if (response.data.review) {
@@ -93,6 +93,22 @@ export default function Review({
     }
   };
 
+  const handleReviewClick = () => {
+    if (!userId) {
+      toast.error('You must be logged in to write a review');
+      return;
+    }
+    if (!hasPurchased) {
+      toast.error('You must purchase the product to write a review');
+      return;
+    }
+    if (hasReview) {
+      toast.error('You have already reviewed this product');
+      return;
+    }
+    setShowReviewForm(true);
+  };
+
   const date = new Date();
   const formattedDate = date.toLocaleDateString('en-US', {
     year: 'numeric',
@@ -115,19 +131,20 @@ export default function Review({
         </div>
         <div>
           <button
-            onClick={() => setShowReviewForm(true)}
-            disabled={hasReview || !userId || !hasPurchased}
+            onClick={handleReviewClick}
             className={`px-4 py-2 text-sm font-light bg-black text-white rounded-full transition duration-300 ${
               hasReview || !userId || !hasPurchased
-                ? 'opacity-80 cursor-not-allowed'
-                : 'hover:bg-gray-800'
+                ? 'opacity-90'
+                : 'hover:bg-gray-700'
             }`}
             title={
-              !hasPurchased
-                ? 'You must purchase the product to review it'
-                : hasReview
-                ? 'You have already reviewed this product'
-                : 'You must be logged in to review'
+              !userId
+                ? 'You must be logged in to review'
+                : !hasPurchased
+                  ? 'You must purchase the product to review it'
+                  : hasReview
+                    ? 'You have already reviewed this product'
+                    : ''
             }
           >
             Write a Review
@@ -135,9 +152,9 @@ export default function Review({
         </div>
       </div>
 
-      <div className='w-full mt-5 flex flex-col md:flex-row justify-between gap-3 overflow-x-auto scrollbar-hide'>
+      <div className='w-full mt-5 flex gap-3 overflow-x-auto scrollbar-hide'>
         {showReviewForm && (
-          <div className='w-[360px] md:w-1/2 px-5 md:px-7 py-6 md:py-6 border border-black/10 rounded-2xl'>
+          <div className='min-w-[345px] md:w-1/2 px-5 md:px-7 py-6 md:py-6 border border-black/10 rounded-2xl'>
             <div className='flex justify-between items-center'>
               <div>
                 <ReactStars
@@ -178,7 +195,7 @@ export default function Review({
               />
             </div>
             <input
-              className='border border-black/20 rounded-lg w-full outline-none px-2 mb-2.5'
+              className='block w-full border border-black/20 rounded-lg outline-none px-2 mb-2.5'
               type='text'
               name='comment'
               onChange={handleChange}
@@ -194,7 +211,7 @@ export default function Review({
           allReview?.map((review, index) => (
             <div
               key={index}
-              className='w-[360px] md:w-1/2 px-5 md:px-7 py-6 md:py-6 border border-black/10 rounded-2xl'
+              className='min-w-[345px] md:w-1/2 px-5 md:px-7 py-6 md:py-6 border border-black/10 rounded-2xl'
             >
               <ReactStars
                 value={review.rating}
@@ -219,7 +236,7 @@ export default function Review({
                   height={28}
                 />
               </div>
-              <span className='text-black/60 font-normal mb-1.5'>
+              <span className='block w-full text-black/60 font-normal mb-1.5'>
                 "{review.comment}"
               </span>
               <span className='block text-[15px] text-black/60'>
