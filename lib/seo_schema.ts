@@ -1,7 +1,7 @@
 export const generateProductSchema = (product: any, slug: string) => ({
   '@context': 'https://schema.org/',
   '@type': 'Product',
-  name: product?.handle,
+  name: product?.slug,
   image: product?.featuredImage?.url,
   description: product?.description?.replace(/<[^>]*>/g, ''),
   sku: product?.id,
@@ -66,7 +66,7 @@ export const generateProductSchema = (product: any, slug: string) => ({
       transitTimeLabel: 'Standard shipping',
     },
   },
-  category: 'Knives',
+  category: 'Clothing',
   brand: {
     '@type': 'Brand',
     name: 'Levoire',
@@ -96,7 +96,7 @@ export const generateProductSchema = (product: any, slug: string) => ({
         bestRating: '5',
         worstRating: '1',
       },
-      reviewBody: 'This item exceeded my expectations! The design is stunning.',
+      reviewBody: 'the product is so good',
       author: {
         '@type': 'Person',
         name: 'Lewis',
@@ -144,23 +144,23 @@ export const generateProductSchema = (product: any, slug: string) => ({
       },
       {
         '@type': 'Question',
-        name: `Why is the ${product?.handle} considered a limited item?`,
+        name: `Why is the ${product?.slug} considered a limited?`,
         acceptedAnswer: {
           '@type': 'Answer',
-          text: `The ${product?.handle} is part of our limited edition ${product?.collections?.edges[0]?.node?.title} collection, released only during special seasonal drops. Once sold out, it won't be restocked.`,
+          text: `The ${product?.slug} is part of our limited edition ${product?.collections?.edges[0]?.node?.title} collection, released only during special seasonal drops. Once sold out, it won't be restocked.`,
         },
       },
       {
         '@type': 'Question',
-        name: `What makes the ${product?.handle} a must-have?`,
+        name: `What makes the ${product?.slug} a must-have?`,
         acceptedAnswer: {
           '@type': 'Answer',
-          text: `The ${product?.handle} stands out for its high-quality fabric, trendy design, and attention to detail—making it a perfect addition to any fashion-forward wardrobe.`,
+          text: `The ${product?.slug} stands out for its high-quality fabric, trendy design, and attention to detail—making it a perfect addition to any fashion-forward wardrobe.`,
         },
       },
       {
         '@type': 'Question',
-        name: `What makes the ${product?.handle} unique in the *${product?.title}* line?`,
+        name: `What makes the ${product?.slug} unique in the *${product?.title}* line?`,
         acceptedAnswer: {
           '@type': 'Answer',
           text: `This item features exclusive tailoring, custom embroidery, and is available in limited quantities, making it a signature piece in the *${product?.title}* collection.`,

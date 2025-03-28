@@ -203,14 +203,14 @@ export default function Navbar() {
                 href='/sign-in'
                 onClick={() => setIsUserMenuOpen(false)}
               >
-                sign in
+                login
               </Link>
               <Link
                 className='w-full bg-white text-black py-2 rounded-lg border border-black'
                 href='/sign-up'
                 onClick={() => setIsUserMenuOpen(false)}
               >
-                sign up
+                register
               </Link>
             </div>
           )}
