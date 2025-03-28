@@ -4,7 +4,7 @@ This is a modern full-featured e-commerce platform built using **Next.js**,
 **React** and **Typescript**. It supports both client-side and server-side
 rendering for a fast and seamless shopping experience. Key functionalities
 include product management, shopping cart, reviews, wishlist, payment
-integration, and an admin dashboard for store management.
+integration, blog system, and an admin dashboard for store management.
 
 ## Overview
 
@@ -48,6 +48,10 @@ clean folder structure with dedicated route handlers for each feature.
   - Responsive UI built with Tailwind CSS and NextUI components
   - Form validation with React Hook Form and Zod
   - Real-time notifications with React Hot Toast
+- **Blog Management with Sanity**:
+  - Create and manage blog posts through Sanity Studio
+  - Rich text editor for content creation
+  - Image management and optimization
 
 ## Tech Stack
 
@@ -60,6 +64,7 @@ clean folder structure with dedicated route handlers for each feature.
   - Next.js API Routes / Route Handlers
   - Prisma 6.2.1 (ORM)
   - PostgreSQL (database)
+  - Sanity.io (Headless CMS for blog)
 - **Authentication**:
   - NextAuth.js
   - Google OAuth
