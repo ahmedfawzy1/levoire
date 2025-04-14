@@ -1,6 +1,8 @@
 import { Suspense } from 'react';
 import Orders from '../components/Orders/Orders';
 import generateSEO from '@/lib/seo';
+import Loading from '../components/Loading';
+
 export const generateMetadata = async () => {
   return generateSEO({
     title: 'Your Orders | Track & Manage Purchases | Levoire',
@@ -11,7 +13,7 @@ export const generateMetadata = async () => {
 
 export default function page() {
   return (
-    <Suspense fallback={<p>Loading Orders</p>}>
+    <Suspense fallback={<Loading />}>
       <Orders />
     </Suspense>
   );

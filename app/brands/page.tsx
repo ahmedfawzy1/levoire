@@ -32,7 +32,7 @@ export default async function page() {
               width={70}
               height={12}
             />
-            <h3 className='text-sm md:text-[18px] font-semibold font-integralCF text-center'>
+            <h3 className='text-sm md:text-[18px] pt-2 font-semibold font-integralCF text-center'>
               {brand.name}
             </h3>
           </div>

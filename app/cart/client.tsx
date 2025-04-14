@@ -39,7 +39,7 @@ export default function Cart() {
 
   const handleRemoveFromCart = (index: number) => {
     const updatedCart = cartItems.filter(
-      (item, itemIndex) => itemIndex !== index
+      (item, itemIndex) => itemIndex !== index,
     );
     localStorage.setItem('cart', JSON.stringify(updatedCart));
     setCartItems(updatedCart);
@@ -48,7 +48,7 @@ export default function Cart() {
 
   const subtotal = cartItems.reduce(
     (total, item) => total + item.maxPrice * item.quantity,
-    0
+    0,
   );
   const discount = 0;
   const shippingFee = 0;
@@ -98,12 +98,12 @@ export default function Cart() {
               className={`w-full flex flex-row justify-between border-b border-black/10 pb-5 last:border-b-0 last:pb-0`}
             >
               <div className='flex items-center gap-4'>
-                <div className='w-[100px] h-[100px] bg-[#F0EEED] flex justify-center items-center rounded-xl'>
+                <div className='w-[100px] h-[100px] bg-[#F0EEED] flex justify-center items-center rounded-xl overflow-hidden'>
                   <Image
                     src={item.image[0]}
                     alt={item.slug}
-                    width={70}
-                    height={70}
+                    width={96}
+                    height={147}
                   />
                 </div>
                 <div>

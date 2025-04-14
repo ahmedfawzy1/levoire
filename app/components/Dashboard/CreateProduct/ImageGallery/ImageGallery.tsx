@@ -93,7 +93,7 @@ export default function ImageGallery({
           >
             {({ open }) => {
               const handleOnClick = (
-                e: React.MouseEvent<HTMLButtonElement>
+                e: React.MouseEvent<HTMLButtonElement>,
               ) => {
                 e.preventDefault();
                 open();
