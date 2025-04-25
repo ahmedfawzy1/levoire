@@ -3,9 +3,12 @@
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/app/context/AuthContext';
-import { getWishlist } from '../lib/wishlist';
+import { getWishlist, removeFromWishlist } from '../lib/wishlist';
 import { Product } from '../types/product';
 import Loading from '../components/Loading';
+import { Trash2 } from 'lucide-react';
+import toast from 'react-hot-toast';
+import Link from 'next/link';
 
 interface WishlistItem {
   id: number;
@@ -43,6 +46,12 @@ export default function Wishlist() {
     );
   }
 
+  const handleRemoveFromWishlist = async (productId: number) => {
+    setWishlist(wishlist.filter(item => item.productId !== productId));
+    await removeFromWishlist(productId);
+    toast.success('Removed from wishlist');
+  };
+
   return (
     <div className='px-5 py-14 max-w-[1280px] mx-auto'>
       <h1 className='text-3xl font-extrabold mb-5'>Your Wishlist</h1>
@@ -51,7 +60,12 @@ export default function Wishlist() {
           key={item.id}
           className='border border-slate-800 rounded-xl p-4 mb-4'
         >
-          <h2 className='text-xl font-semibold mb-2'>Wishlist #{item.id}</h2>
+          <div className='flex justify-between items-center'>
+            <h2 className='text-xl font-semibold mb-2'>Wishlist #{item.id}</h2>
+            <button onClick={() => handleRemoveFromWishlist(item.productId)}>
+              <Trash2 size={20} />
+            </button>
+          </div>
           <p className='text-gray-500'>
             Added on {new Date(item.createdAt).toLocaleDateString()}
           </p>
@@ -70,7 +84,12 @@ export default function Wishlist() {
                 />
               </div>
               <div>
-                <h3 className='text-lg font-semibold'>{item.product.title}</h3>
+                <Link
+                  href={`/shop/${item.product.slug}`}
+                  className='text-lg font-semibold'
+                >
+                  {item.product.title}
+                </Link>
                 <p
                   dangerouslySetInnerHTML={{
                     __html: item.product.description,

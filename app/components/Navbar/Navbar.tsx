@@ -142,7 +142,6 @@ export default function Navbar() {
             className='text-black cursor-pointer'
             href='/cart'
             aria-label='go to cart'
-            onClick={handleNavigation}
           >
             <ShoppingCart size={20} />
           </Link>
