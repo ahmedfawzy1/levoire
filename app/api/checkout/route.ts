@@ -13,7 +13,7 @@ interface CartItem {
 }
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-01-27.acacia',
+  apiVersion: '2025-02-24.acacia',
   typescript: true,
 });
 
@@ -26,7 +26,7 @@ export async function POST(request: Request) {
     if (cartItems.length === 0 || isNaN(userId)) {
       return NextResponse.json(
         { error: 'Empty cart or invalid user ID provided' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -35,7 +35,7 @@ export async function POST(request: Request) {
     });
 
     console.log(
-      `Cart created successfully for user ID: ${userId}, Cart ID: ${userCart.id}`
+      `Cart created successfully for user ID: ${userId}, Cart ID: ${userCart.id}`,
     );
 
     const cartId = userCart.id;
@@ -61,14 +61,14 @@ export async function POST(request: Request) {
               price,
             },
           });
-        })
+        }),
       );
       console.log(`Cart items added successfully for cart ID: ${cartId}`);
     } catch (error: any) {
       console.error(`Failed to save cart items: ${error.message}`);
       return NextResponse.json(
         { error: 'Failed to save cart items' },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -103,23 +103,23 @@ export async function POST(request: Request) {
         },
       });
       console.log(
-        `Stripe checkout session created successfully for user ID: ${userId}, Cart ID: ${cartId}`
+        `Stripe checkout session created successfully for user ID: ${userId}, Cart ID: ${cartId}`,
       );
       return NextResponse.json({ url: session.url }, { status: 200 });
     } catch (error: any) {
       console.error(
-        `Stripe API error: Failed to create checkout session for user ID ${userId}: ${error.message}`
+        `Stripe API error: Failed to create checkout session for user ID ${userId}: ${error.message}`,
       );
       return NextResponse.json(
         { error: 'Unable to initiate payment process at the moment' },
-        { status: 500 }
+        { status: 500 },
       );
     }
   } catch (error: any) {
     console.error(`Failed to process cart checkout ${error.message}`);
     return NextResponse.json(
       { error: `Failed to process cart checkout ${error.message}` },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

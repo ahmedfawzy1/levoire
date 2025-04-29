@@ -39,10 +39,10 @@ export default function Info({
   const colors = color.split(',');
   const sizes = size.split(',');
   const [selectedSize, setSelectedSize] = useState(
-    sizes.length === 1 ? sizes[0] : ''
+    sizes.length === 1 ? sizes[0] : '',
   );
   const [selectedColor, setSelectedColor] = useState(
-    colors.length === 1 ? colors[0] : ''
+    colors.length === 1 ? colors[0] : '',
   );
   const { setCartItems } = useContext(CartContext);
 
@@ -78,7 +78,7 @@ export default function Info({
       (item: { id: number; size: string; color: string }) =>
         item.id === id &&
         item.size === selectedSize &&
-        item.color === selectedColor
+        item.color === selectedColor,
     );
 
     if (existingProductIndex > -1) {

@@ -1,7 +1,7 @@
 import { BlogDetail } from '@/app/types/blog';
 import { urlFor } from '@/lib/sanity';
 import generateSEO from '@/lib/seo';
-import { PortableText } from 'next-sanity';
+import BlogContent from '@/app/components/BlogContent';
 import Image from 'next/image';
 import { getBlogDetail } from '../action';
 
@@ -51,8 +51,8 @@ export default async function page(props: pageParams) {
             className='mt-8 rounded-lg'
           />
 
-          <div className='mt-8 max-w-[750px]'>
-            <PortableText value={post.content} />
+          <div className='mt-8 max-w-[750px] prose prose-lg'>
+            <BlogContent content={post.content} />
           </div>
         </div>
       </div>
