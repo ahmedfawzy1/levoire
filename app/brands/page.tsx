@@ -16,29 +16,30 @@ export default async function page() {
   const brands = await getAllBrands();
 
   return (
-    <section className='max-w-[1280px] h-screen mx-auto pt-14 pb-8'>
-      <h2 className='text-3xl md:text-[42px] font-semibold font-integralCF text-center'>
+    <section className='max-w-[1280px] mx-auto pt-14 pb-20 min-h-screen'>
+      <h2 className='text-3xl md:text-[42px] font-semibold font-integralCF text-center mb-12'>
         Brands
       </h2>
 
-      <div className='px-5 pt-10 pb-8 flex flex-wrap justify-between items-center gap-4'>
-        {brands.map((brand: any) => (
-          <div
-            key={brand.id}
-            className='max-w-[200px] px-4 py-6 bg-[#FAFAFC] rounded-xl'
-          >
-            <Image
-              src={brand?.image[0]}
-              className='w-full object-cover'
-              alt={brand.name}
-              width={70}
-              height={12}
-            />
-            <h3 className='text-sm md:text-[18px] pt-2 font-semibold font-integralCF text-center'>
-              {brand.name}
-            </h3>
-          </div>
-        ))}
+      <div className='px-5 md:px-8'>
+        <div className='grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-3 md:gap-4'>
+          {brands.map((brand: any) => (
+            <div
+              key={brand.id}
+              className='group bg-[#FAFAFC] rounded-xl p-4 md:p-5 flex flex-col items-center justify-center transition-all duration-300 hover:shadow-lg hover:scale-105 cursor-pointer min-h-[100px] md:min-h-[120px]'
+            >
+              <div className='flex items-center justify-center w-full h-full'>
+                <Image
+                  src={brand?.image[0]}
+                  className='w-full h-auto object-contain max-h-12 md:max-h-14'
+                  alt={brand.name}
+                  width={120}
+                  height={50}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
