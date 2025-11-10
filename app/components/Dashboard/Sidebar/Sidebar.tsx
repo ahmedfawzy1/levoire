@@ -54,7 +54,7 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <div className='px-2 md:px-5 pt-5 bg-[#f9f9f9] border-r-1 border-slate-700 flex flex-col gap-5'>
+    <div className='w-16 md:w-64 px-2 md:px-5 pt-5 bg-[#f9f9f9] border-r border-slate-200 flex flex-col gap-2 min-h-screen flex-shrink-0'>
       {adminMenu.map(item => (
         <Link
           key={item.label}
