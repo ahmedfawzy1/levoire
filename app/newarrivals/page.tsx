@@ -2,6 +2,8 @@ import { getAllLatestProduct } from '@/app/lib/product';
 import { Product } from '@/app/types/product';
 import ItemCard from '../components/shop/ItemCard';
 
+export const revalidate = 3600;
+
 export default async function NewArrivals() {
   const latestProducts = await getAllLatestProduct();
 

@@ -1,6 +1,8 @@
 import generateSEO from '@/lib/seo';
 import Shop from './client';
 
+export const revalidate = 3600;
+
 export async function generateMetadata() {
   return generateSEO({
     title: 'Shop Levoire | Latest Fashion Trends & Timeless Styles',

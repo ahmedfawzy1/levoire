@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { BlogOverview } from '../types/blog';
 import { getAllBlogs } from './action';
 
+export const revalidate = 3600;
+
 export async function generateMetadata() {
   return generateSEO({
     title: 'Levoire Blog | Fashion Trends, Style Tips & Inspiration',

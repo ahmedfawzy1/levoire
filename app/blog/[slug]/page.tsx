@@ -13,6 +13,8 @@ interface GenerateMetadataProps {
   params: Promise<{ slug: string }>;
 }
 
+export const revalidate = 3600;
+
 export const generateMetadata = async (props: GenerateMetadataProps) => {
   const { slug } = await props.params;
   const data: BlogDetail = await getBlogDetail(slug);

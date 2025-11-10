@@ -5,6 +5,8 @@ import BestSelling from './components/Landing/BestSelling/BestSelling';
 import Category from './components/Landing/Category/Category';
 import Reviews from './components/Landing/Reviews/Reviews';
 
+export const revalidate = 3600;
+
 export default function Home() {
   return (
     <>
