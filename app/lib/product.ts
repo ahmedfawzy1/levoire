@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { db } from './db';
 
 const baseUrl = typeof window === 'undefined' ? process.env.NEXTAUTH_URL : '';
 
@@ -124,5 +125,32 @@ export async function searchProducts(
       console.error('Error searching products:', error);
     }
     return [];
+  }
+}
+
+export async function getProductsServer(page: number = 1, limit: number = 12) {
+  try {
+    const skip = (page - 1) * limit;
+
+    const products = await db.product.findMany({
+      skip,
+      take: limit,
+    });
+
+    const totalCount = await db.product.count();
+    const totalPages = Math.ceil(totalCount / limit);
+
+    return {
+      products: products,
+      totalCount,
+      totalPages,
+    };
+  } catch (error: any) {
+    console.error('Error fetching products:', error.message);
+    return {
+      products: [],
+      totalCount: 0,
+      totalPages: 1,
+    };
   }
 }

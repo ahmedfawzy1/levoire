@@ -1,11 +1,32 @@
 'use client';
 
-import { useState, Suspense } from 'react';
+import { useState, Suspense, useEffect, useContext } from 'react';
 import Filters from '../components/shop/Filters';
 import Products from '../components/shop/Products';
+import ProductContext from '../context/ProductContext';
 
-export default function Shop() {
+interface ShopProps {
+  initialProducts?: any[];
+  initialTotalPages?: number;
+}
+
+export default function Shop({
+  initialProducts = [],
+  initialTotalPages = 1,
+}: ShopProps) {
   const [showFilter, setShowFilter] = useState(false);
+  const { products, setProducts, setAllProducts, setTotalPages } =
+    useContext(ProductContext);
+
+  // Initialize context with server-fetched data on mount
+  useEffect(() => {
+    if (initialProducts.length > 0 && products.length === 0) {
+      setProducts(initialProducts);
+      setAllProducts(initialProducts);
+      setTotalPages(initialTotalPages);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <section className='px-5 py-2 md:py-10 max-w-[1280px] mx-auto min-h-screen'>

@@ -8,8 +8,6 @@ import Info from '../../components/shop/[slug]/Info';
 import RelatedProducts from '@/app/components/shop/[slug]/RelatedProducts';
 import generateSEO from '@/lib/seo';
 import { generateProductSchema } from '@/lib/seo_schema';
-import { Suspense } from 'react';
-import Loading from '@/app/components/Loading';
 
 interface PageParams {
   params: Promise<{ slug: string }>;
@@ -61,35 +59,29 @@ export default async function page(props: PageParams) {
         type='application/ld+json'
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLD) }}
       />
-      <Suspense fallback={<Loading />}>
-        {product && (
+      {product && (
+        <>
+          <div className='flex flex-col md:flex-row gap-14 mb-5'>
+            {product.image && (
+              <ImageGallery
+                ImageUrls={product.image}
+                userId={userId}
+                productId={product.id}
+              />
+            )}
+            <Info userId={userId} {...product} rating={product.averageRating} />
+          </div>
           <>
-            <div className='flex flex-col md:flex-row gap-14 mb-5'>
-              {product.image && (
-                <ImageGallery
-                  ImageUrls={product.image}
-                  userId={userId}
-                  productId={product.id}
-                />
-              )}
-              <Info
-                userId={userId}
-                {...product}
-                rating={product.averageRating}
-              />
-            </div>
-            <>
-              <Review
-                allReview={allReview}
-                productId={product?.id}
-                userId={userId}
-                userName={userName}
-              />
-              <RelatedProducts />
-            </>
+            <Review
+              allReview={allReview}
+              productId={product?.id}
+              userId={userId}
+              userName={userName}
+            />
+            <RelatedProducts />
           </>
-        )}
-      </Suspense>
+        </>
+      )}
     </section>
   );
 }

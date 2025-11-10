@@ -29,16 +29,28 @@ const ProductContext = createContext<ProductContextType>({
 
 interface ProductProviderProps {
   children: React.ReactNode;
+  initialProducts?: any[];
+  initialTotalPages?: number;
 }
 
-export const ProductProvider = ({ children }: ProductProviderProps) => {
-  const [allProducts, setAllProducts] = useState<any[]>([]);
-  const [products, setProducts] = useState<any[]>([]);
+export const ProductProvider = ({
+  children,
+  initialProducts = [],
+  initialTotalPages = 1,
+}: ProductProviderProps) => {
+  const [allProducts, setAllProducts] = useState<any[]>(initialProducts);
+  const [products, setProducts] = useState<any[]>(initialProducts);
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const [totalPages, setTotalPages] = useState(initialTotalPages);
   const [limit] = useState(12);
 
   useEffect(() => {
+    // Only fetch if page changed (skip initial mount if we have initial data)
+    if (page === 1 && initialProducts.length > 0) {
+      // Use initial data, don't fetch
+      return;
+    }
+
     const controller = new AbortController();
     const signal = controller.signal;
 
@@ -60,7 +72,7 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
     return () => {
       controller.abort();
     };
-  }, [page, limit]);
+  }, [page, limit, initialProducts.length]);
 
   const contextValue = useMemo(
     () => ({
@@ -74,7 +86,7 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
       setTotalPages,
       limit,
     }),
-    [allProducts, setAllProducts, products, page, totalPages, limit]
+    [allProducts, setAllProducts, products, page, totalPages, limit],
   );
 
   return (
