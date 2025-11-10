@@ -20,13 +20,16 @@ export default async function page() {
   const [featuredPost, ...latestPosts] = data;
 
   return (
-    <section className='py-10'>
+    <section className='py-10 px-5'>
       <div className='pb-12'>
         <h1 className='text-3xl md:text-[42px] font-semibold font-integralCF text-center pb-12'>
           Blogs
         </h1>
         {featuredPost && (
-          <div key={featuredPost.slug} className='w-full flex gap-7'>
+          <div
+            key={featuredPost.slug}
+            className='w-full flex flex-col md:flex-row gap-7'
+          >
             <div className='basis-1/2'>
               <Link href={`/blog/${featuredPost.slug}`} className='w-full'>
                 <Image
