@@ -5,6 +5,8 @@ import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/app/context/AuthContext';
 import { menuItems } from '@/lib/constants';
+import { searchProducts } from '@/app/lib/product';
+import { Product } from '@/app/types/product';
 import {
   Heart,
   LogOut,
@@ -17,14 +19,22 @@ import {
   UserCircle,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<Product[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const { user, handleSignOut } = useAuth();
+  const router = useRouter();
   const menuRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const searchRef = useRef<HTMLDivElement>(null);
   const buttonClickedRef = useRef(false);
+  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const toggleMobileMenu = (event: React.MouseEvent) => {
     event.stopPropagation();
@@ -51,6 +61,54 @@ export default function Navbar() {
     }
   };
 
+  // Handle search
+  useEffect(() => {
+    // Cancel previous timeout
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+
+    // Cancel previous API request
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+
+    if (searchQuery.trim().length === 0) {
+      setSearchResults([]);
+      setShowSuggestions(false);
+      return;
+    }
+
+    // Create new AbortController for this request
+    abortControllerRef.current = new AbortController();
+
+    searchTimeoutRef.current = setTimeout(async () => {
+      try {
+        const results = await searchProducts(
+          searchQuery,
+          5,
+          abortControllerRef.current?.signal,
+        );
+        setSearchResults(results);
+        setShowSuggestions(results.length > 0);
+      } catch (error: any) {
+        if (error.name !== 'CanceledError' && error.name !== 'AbortError') {
+          console.error('Error searching products:', error);
+          setSearchResults([]);
+        }
+      }
+    }, 300);
+
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
+  }, [searchQuery]);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (buttonClickedRef.current) {
@@ -61,10 +119,15 @@ export default function Navbar() {
       const target = event.target as Node;
       const isMenuButton = menuRef.current?.contains(target);
       const isUserMenuButton = userMenuRef.current?.contains(target);
+      const isSearchArea = searchRef.current?.contains(target);
 
       if (!isMenuButton && !isUserMenuButton) {
         setIsMenuOpen(false);
         setIsUserMenuOpen(false);
+      }
+
+      if (!isSearchArea) {
+        setShowSuggestions(false);
       }
     };
 
@@ -73,6 +136,16 @@ export default function Navbar() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleProductClick = (slug: string) => {
+    setSearchQuery('');
+    setShowSuggestions(false);
+    router.push(`/shop/${slug}`);
+  };
 
   return (
     <nav className='bg-white border-gray-200 sticky top-0 inset-x-0 z-50 shadow-sm'>
@@ -113,15 +186,55 @@ export default function Navbar() {
           </ul>
         </div>
 
-        <div className='hidden md:flex flex-1 relative'>
-          <span className='absolute top-2.5 left-3'>
+        <div className='hidden md:flex flex-1 relative' ref={searchRef}>
+          <span className='absolute top-2.5 left-3 z-10'>
             <SearchIcon className='text-black/40' size={17} />
           </span>
           <input
-            className='block w-full py-2 ps-9 bg-[#F0F0F0] text-sm text-gray-900 rounded-3xl'
+            className='block w-full py-2 ps-9 bg-[#F0F0F0] text-sm text-gray-900 rounded-3xl focus:outline-none focus:ring-2 focus:ring-black/20'
             placeholder='Search for products...'
             type='search'
+            value={searchQuery}
+            onChange={handleSearchChange}
+            onFocus={() => {
+              if (searchResults.length > 0) {
+                setShowSuggestions(true);
+              }
+            }}
           />
+          {showSuggestions && searchResults.length > 0 && (
+            <div className='absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto'>
+              {searchResults.map(product => (
+                <button
+                  key={product.id}
+                  onClick={() => handleProductClick(product.slug)}
+                  className='w-full flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors text-left border-b border-gray-100 last:border-b-0'
+                >
+                  {product.image &&
+                  Array.isArray(product.image) &&
+                  product.image[0] ? (
+                    <div className='flex-shrink-0 w-12 h-12 relative'>
+                      <Image
+                        src={product.image[0] as string}
+                        alt={product.title}
+                        fill
+                        className='object-contain rounded'
+                        sizes='48px'
+                      />
+                    </div>
+                  ) : null}
+                  <div className='flex-1 min-w-0'>
+                    <p className='text-sm font-medium text-gray-900 truncate'>
+                      {product.title}
+                    </p>
+                    <p className='text-xs text-gray-500 truncate'>
+                      {product.category} • ${product.maxPrice}
+                    </p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
         <div className='flex items-center gap-3'>
           <Search
