@@ -83,18 +83,20 @@ export default function Orders() {
             {order.items.map(item => (
               <div
                 key={item.id}
-                className='flex items-center gap-5 border-b pb-4 last:border-b-0 last:pb-0'
+                className='flex flex-col sm:flex-row items-start sm:items-center gap-5 border-b pb-4 last:border-b-0 last:pb-0'
               >
-                <div>
-                  <Image
-                    src={item.product.image[0]}
-                    alt={item.product.title}
-                    className='rounded-full'
-                    width={100}
-                    height={100}
-                  />
+                <div className='flex-shrink-0 w-auto'>
+                  <div className='relative w-20 sm:w-24 md:w-32 lg:w-40 aspect-square'>
+                    <Image
+                      src={item.product.image[0]}
+                      alt={item.product.title}
+                      className='rounded-lg object-cover'
+                      fill
+                      sizes='(max-width: 640px) 80px, (max-width: 768px) 96px, (max-width: 1024px) 128px, 160px'
+                    />
+                  </div>
                 </div>
-                <div>
+                <div className='flex-1 min-w-0'>
                   <h3>{item.product.title}</h3>
                   <p
                     dangerouslySetInnerHTML={{
