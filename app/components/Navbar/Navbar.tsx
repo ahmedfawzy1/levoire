@@ -17,6 +17,7 @@ import {
   Settings,
   ShoppingCart,
   UserCircle,
+  X,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
@@ -147,6 +148,12 @@ export default function Navbar() {
     router.push(`/shop/${slug}`);
   };
 
+  const handleClearSearch = () => {
+    setSearchQuery('');
+    setSearchResults([]);
+    setShowSuggestions(false);
+  };
+
   return (
     <nav className='bg-white border-gray-200 sticky top-0 inset-x-0 z-50 shadow-sm'>
       <div
@@ -191,7 +198,7 @@ export default function Navbar() {
             <SearchIcon className='text-black/40' size={17} />
           </span>
           <input
-            className='block w-full py-2 ps-9 bg-[#F0F0F0] text-sm text-gray-900 rounded-3xl focus:outline-none focus:ring-2 focus:ring-black/20'
+            className='block w-full py-2 ps-9 pe-9 bg-[#F0F0F0] text-sm text-gray-900 rounded-3xl focus:outline-none focus:ring-2 focus:ring-black/20 [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-cancel-button]:hidden'
             placeholder='Search for products...'
             type='search'
             value={searchQuery}
@@ -202,6 +209,16 @@ export default function Navbar() {
               }
             }}
           />
+          {searchQuery && (
+            <button
+              type='button'
+              onClick={handleClearSearch}
+              className='absolute top-2 right-3 z-10 p-0.5 rounded-full hover:bg-gray-200 transition-colors'
+              aria-label='Clear search'
+            >
+              <X className='text-black/60 hover:text-black' size={16} />
+            </button>
+          )}
           {showSuggestions && searchResults.length > 0 && (
             <div className='absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto'>
               {searchResults.map(product => (
