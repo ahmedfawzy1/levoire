@@ -36,7 +36,7 @@ export default function ImageGallery({
 
   const toggleWishlist = async () => {
     if (!userId) {
-      toast.error('⚠️ Please login to add items to your wishlist');
+      toast.error('Please login to add items to your wishlist');
       return;
     }
     if (isWishlisted) {

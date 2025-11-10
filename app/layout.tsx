@@ -108,7 +108,12 @@ export default function RootLayout({
               </CartProvider>
             </ProductProvider>
           </AuthProvider>
-          <Toaster />
+          <Toaster
+            position='top-center'
+            toastOptions={{
+              duration: 5000,
+            }}
+          />
         </Provider>
       </body>
     </html>
